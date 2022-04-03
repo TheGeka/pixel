@@ -84,6 +84,12 @@ startx = 1423
 starty = 1068
 
 [[structure]]
+name = "watasheep"
+file = "images/watasheep.png"
+startx = 1289
+starty = 1063
+
+[[structure]]
 name = "more-vshojo"
 file = "images/more-vshojo.png"
 startx = 1382
