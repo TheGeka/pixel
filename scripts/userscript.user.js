@@ -35,5 +35,14 @@ if (window.top !== window.self) {
 			img.src = src;
 		}
 		addImage("https://raw.githubusercontent.com/TheGeka/pixel/main/output.png", 0, 0);
+		const waitForPreview = setInterval(() => {
+			const preview = camera.querySelector("mona-lisa-pixel-preview");
+			if (preview) {
+			  clearInterval(waitForPreview);
+			  const style = document.createElement('style')
+			  style.innerHTML = '.pixel { clip-path: polygon(-20% -20%, -20% 120%, 37% 120%, 37% 37%, 62% 37%, 62% 62%, 37% 62%, 37% 120%, 120% 120%, 120% -20%); }'
+			  preview.shadowRoot.appendChild(style);
+			}
+		}, 100);
 	}, false);
 }
