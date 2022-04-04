@@ -18,16 +18,16 @@ startx = 1883
 starty = 733
 
 [[structure]]
-name = "ChibiWall"
-file = "images/ChibiWall.png"
-startx = 1454
-starty = 1063
-
-[[structure]]
 name = "suisei"
 file = "images/suisei.png"
 startx = 1451
 starty = 1075
+
+[[structure]]
+name = "ChibiWall"
+file = "images/ChibiWall.png"
+startx = 1455
+starty = 1064
 
 [[structure]]
 name = "niji_main"
