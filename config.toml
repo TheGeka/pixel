@@ -137,7 +137,11 @@ file = "images/NijiSouth.png"
 startx = 1501
 starty = 1064
 
-
+[[structure]]
+name = "Taskbar"
+file = "images/Taskbar.png"
+startx = 1028
+starty = 1972
 
 
 # Add everything above this!!!
