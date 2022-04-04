@@ -15,7 +15,7 @@ starty = 869
 name = "NijiEast"
 file = "images/nijisanji-east.png"
 startx = 1883
-starty = 734
+starty = 733
 
 [[structure]]
 name = "ChibiWall"
