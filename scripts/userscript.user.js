@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hololive combo
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.2.1
 // @description  Spread the love
 // @author       oralekin
 // @match        https://hot-potato.reddit.com/embed*
@@ -18,44 +18,34 @@ if (window.top !== window.self) {
 		function addImage(src, posX, posY) {
 			let img = document.createElement("img");
 			const hint = document.createElement("canvas");
-			const plan = document.createElement("canvas");
 			img.onload = () => {
 				const width = img.width;
 				const height = img.height;
+				const style = `
+					position: absolute;
+					left: ${posX}px;
+					top: ${posY}px;
+					image-rendering: pixelated;
+					width: ${width}px;
+					height: ${height}px;`;
+
+				img.setAttribute("id", "planOverlay");
+				img.style = style;
+
 				hint.setAttribute("id", "hintOverlay");
 				hint.width = width * 3;
 				hint.height = height * 3;
-				hint.style = `
-					position: absolute;
-					left: ${posX}px;
-					top: ${posY}px;
-					image-rendering: pixelated;
-					width: ${width}px;
-					height: ${height}px;`;
-				const t_ctx = hint.getContext("2d");
-				t_ctx.globalAlpha = opacity;
+				hint.style = style;
+				const ctx = hint.getContext("2d");
+				ctx.globalAlpha = opacity;
 				for (let y = 0; y < height; y++) {
 					for (let x = 0; x < width; x++) {
-						t_ctx.drawImage(img, x, y, 1, 1, x * 3 + 1, y * 3 + 1, 1, 1);
+						ctx.drawImage(img, x, y, 1, 1, x * 3 + 1, y * 3 + 1, 1, 1);
 					}
 				}
-
-				plan.setAttribute("id", "planOverlay");
-				plan.width = width;
-				plan.height = height;
-				plan.style = `
-					position: absolute;
-					left: ${posX}px;
-					top: ${posY}px;
-					image-rendering: pixelated;
-					width: ${width}px;
-					height: ${height}px;`;
-				const i_ctx = plan.getContext("2d");
-				i_ctx.globalAlpha = opacity;
-				i_ctx.drawImage(img, 0, 0);
 			};
 			img.src = src;
-			return [hint, plan];
+			return [hint, img];
 		}
 
 		const waitForPreview = setInterval(() => {
@@ -98,11 +88,12 @@ if (window.top !== window.self) {
 		}
 		// I would like to personally thank the osu team for inspiring (read: letting me copy paste) this code
 		// free software :P
-		function addCheckbox(y, id, label, checked, onclick) {
-			let visCheckbox = document.createElement("div");
+		function addInput(y, id, label, kind, setup) {
+			if (layout.contains(layout.querySelector(`#${id}`))) return;
+			let visDiv = document.createElement("div");
 
 			// designed to be below the osu team's slider
-			visCheckbox.style = `
+			visDiv.style = `
 				position: fixed;
 				left: calc(var(--sail) + 16px);
 				right: calc(var(--sair) + 16px);
@@ -116,43 +107,46 @@ if (window.top !== window.self) {
 				text-align: center;
 			`;
 
+			function createInput() {
+				let visInput = document.createElement("input");
+				visInput.setAttribute("type", kind);
+				visInput.setAttribute("id", id);
+				setup(visInput);
+				visDiv.appendChild(visInput);
+				return visInput;
+			}
+			
 			let visText = document.createElement("div");
 			visText.innerText = label;
-			visCheckbox.appendChild(visText);
+			visDiv.appendChild(visText);
 			visText.style = "background-color: rgba(0, 0, 0, 0.5)";
-
-			let visInput = document.createElement("input");
-			visInput.setAttribute("type", "checkbox");
-			visInput.setAttribute("id", id);
-			visInput.setAttribute("name", "checkbox");
-			visInput.checked = checked;
-			visInput.onclick = () => onclick(visInput.checked);
-			visCheckbox.appendChild(visInput);
+			createInput();
 
 			let topControls = document.querySelector("mona-lisa-embed").shadowRoot.querySelector(".layout .top-controls");
-			insertAfter(visCheckbox, topControls);
+			insertAfter(visDiv, topControls);
 		}
 
-		let [hint, plan] = addImage("https://dev.bloodmoon-network.de/place/output.png", 0, 0);
+		const src = "https://raw.githubusercontent.com/TheGeka/pixel/main/output.png";
+		let [hint, plan] = addImage(src, 0, 0);
 
 		function loadRegions() {
-			const hintId = "visHintCheckbox";
-			const planId = "visPlanCheckbox";
-			if (!layout.contains(layout.querySelector(`#${hintId}`))) {
-				const toggleOverlay = checked => {
-					container.querySelector("#hintOverlay").style.display = checked ? "block" : "none";
-				};
-				addCheckbox(80, hintId, "Show hint", true, toggleOverlay);
+			console.log("LOADING REGIONS");
+
+			const toggleOverlay = (id, checked) => {
+				container.querySelector(`#${id}`).style.display = checked ? "block" : "none";
+			};
+
+			addInput(80, "visHintCheckbox", "Show hint", "checkbox", visInput => {
 				container.appendChild(hint);
-			}
-			if (!layout.contains(layout.querySelector(`#${planId}`))) {
-				const changeOverlay = checked => {
-					container.querySelector("#planOverlay").style.display = checked ? "block" : "none";
-				};
-				addCheckbox(112, planId, "Preview full plans", false, changeOverlay);
+				visInput.checked = true;
+				visInput.onclick = () => toggleOverlay("hintOverlay", visInput.checked);
+			});
+			addInput(112, "visPlanCheckbox", "Preview full plans", "checkbox", visInput => {
 				container.appendChild(plan);
-        changeOverlay(false);
-			}
+				visInput.checked = true;
+				visInput.onclick = () => toggleOverlay("planOverlay", visInput.checked);
+				visInput.click();
+			});
 		}
 	}, false);
 }
