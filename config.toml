@@ -12,8 +12,8 @@ startx = 1365
 starty = 869
 
 [[structure]]
-name = "lazulight"
-file = "images/Lazulight.png"
+name = "NijiEast"
+file = "images/nijisanji-east.png"
 startx = 1884
 starty = 733
 
@@ -34,12 +34,6 @@ starty = 721
 #file = "images/vshojo.png"
 #startx = 163
 #starty = 747
-
-[[structure]]
-name = "sanbaka + others"
-file = "images/Sanbaka + Others.png"
-startx = 1923
-starty = 751
 
 [[structure]]
 name = "yagoo"
