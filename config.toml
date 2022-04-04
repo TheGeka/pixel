@@ -26,8 +26,8 @@ starty = 1063
 [[structure]]
 name = "suisei"
 file = "images/suisei.png"
-startx = 1450
-starty = 1074
+startx = 1451
+starty = 1075
 
 [[structure]]
 name = "niji_main"
