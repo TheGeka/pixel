@@ -202,3 +202,9 @@ name = "ina"
 file = "images/Ina.png"
 startx = 1526
 starty = 1051
+
+[[structure]]
+name = "PPT"
+file = "images/PPT.png"
+startx = 1369
+starty = 1112
