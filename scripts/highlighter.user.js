@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Highlight Tool
 // @namespace    http://tampermonkey.net/
-// @version      0.8.1
+// @version      0.9
 // @description  try to take over the canvas!
 // @author       oralekin, LittleEndu, ekgame, Wieku, DeadRote, Thank you Osu Server for the Highlight feature - Senpoii
 // @match        https://hot-potato.reddit.com/embed*
@@ -112,17 +112,18 @@ if (window.top !== window.self) {
             svg.setAttribute("width","2000px");
             svg.setAttribute("height","2000px");
             svg.style = `
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: 1;
-            opacity: `+placeGlobal.visLevel+`;`;
+                position: absolute;
+                left: 0;
+                top: 0;
+                image-rendering: pixelated;
+                z-index: 1;
+                opacity: ${placeGlobal.visLevel};`;
 
             let svgDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
             svg.appendChild(svgDefs);
 
             let mask = document.createElementNS('http://www.w3.org/2000/svg', 'mask');
-            mask.setAttribute("id","osuplaceMask");
+            mask.setAttribute("id","notosuplaceMask");
             svgDefs.appendChild(mask);
 
             let mainMask = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
@@ -153,8 +154,8 @@ if (window.top !== window.self) {
             bodyRect.setAttribute("height","2000px");
             bodyRect.setAttribute("x","0");
             bodyRect.setAttribute("y","0");
-            bodyRect.setAttribute("fill","rgba(0,0,0,0.6)");
-            bodyRect.setAttribute("mask","url(#osuplaceMask)")
+            bodyRect.setAttribute("fill","rgba(0,0,0,1)");
+            bodyRect.setAttribute("mask","url(#notosuplaceMask)")
             svgBody.appendChild(bodyRect);
 
             return svg
