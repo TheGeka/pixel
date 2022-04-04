@@ -220,3 +220,9 @@ name = "chronoir"
 file = "images/CNR.png"
 startx = 1526
 starty = 1065
+
+[[structure]]
+name = "ina"
+file = "images/Ina.png"
+startx = 1526
+starty = 1051
