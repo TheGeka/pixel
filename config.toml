@@ -134,8 +134,8 @@ starty = 1086
 [[structure]]
 name = "kaf_final"
 file = "images/kaf_final.png"
-startx = 1419
-starty = 1104
+startx = 1387
+starty = 1078
 
 [[structure]]
 name = "mouseyhug"
