@@ -208,3 +208,9 @@ name = "PPT"
 file = "images/PPT.png"
 startx = 1369
 starty = 1112
+
+[[structure]]
+name = "Chico"
+file = "images/Chico.png"
+startx = 1546
+starty = 1108
