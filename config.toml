@@ -54,6 +54,12 @@ startx = 1404
 starty = 902
 
 [[structure]]
+name = "suisei_comet"
+file = "images/suisei_comet.png"
+startx = 1334
+starty = 903
+
+[[structure]]
 name = "Council"
 file = "images/Council.png"
 startx = 233
