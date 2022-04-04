@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Highlight Tool
 // @namespace    http://tampermonkey.net/
-// @version      0.8
+// @version      0.9
 // @description  try to take over the canvas!
 // @author       oralekin, LittleEndu, ekgame, Wieku, DeadRote, Thank you Osu Server for the Highlight feature - Senpoii
 // @match        https://hot-potato.reddit.com/embed*
@@ -13,26 +13,17 @@ if (window.top !== window.self) {
         // Load the image
         const image = document.createElement("img");
         const undotted = "https://dev.bloodmoon-network.de/place/HighlightShadowmap.png";
-        image.src = "https://dev.bloodmoon-network.de/place/output.png";
-
-        image.onload = () => {
-             image.style = `position: absolute; left: 0; top: 0; width: ${image.width/3}px; height: ${image.height/3}px; image-rendering: pixelated; z-index: 1`;
-        };
 
         // Add the image as overlay
         const camera = document.querySelector("mona-lisa-embed").shadowRoot.querySelector("mona-lisa-camera");
         const layout = document.querySelector("mona-lisa-embed").shadowRoot;
         const canvas = camera.querySelector("mona-lisa-canvas");
-        canvas.shadowRoot.querySelector('.container').appendChild(image);
       
         // Add a style to put a hole in the pixel preview (to see the current or desired color)
         const waitForPreview = setInterval(() => {
             const preview = camera.querySelector("mona-lisa-pixel-preview");
             if (preview) {
               clearInterval(waitForPreview);
-              const style = document.createElement('style')
-              style.innerHTML = '.pixel { clip-path: polygon(-20% -20%, -20% 120%, 37% 120%, 37% 37%, 62% 37%, 62% 62%, 37% 62%, 37% 120%, 120% 120%, 120% -20%); }'
-              preview.shadowRoot.appendChild(style);
               loadRegions()
               setTimeout(()=>{
                   loadRegions();
@@ -44,6 +35,7 @@ if (window.top !== window.self) {
               },1000)
             }
         }, 100);
+      
         //Insert element after another element
         function insertAfter(newNode, referenceNode) {
             referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
@@ -120,17 +112,18 @@ if (window.top !== window.self) {
             svg.setAttribute("width","2000px");
             svg.setAttribute("height","2000px");
             svg.style = `
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: 1;
-            opacity: `+placeGlobal.visLevel+`;`;
+                position: absolute;
+                left: 0;
+                top: 0;
+                image-rendering: pixelated;
+                z-index: 1;
+                opacity: ${placeGlobal.visLevel};`;
 
             let svgDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
             svg.appendChild(svgDefs);
 
             let mask = document.createElementNS('http://www.w3.org/2000/svg', 'mask');
-            mask.setAttribute("id","osuplaceMask");
+            mask.setAttribute("id","notosuplaceMask");
             svgDefs.appendChild(mask);
 
             let mainMask = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
@@ -161,8 +154,8 @@ if (window.top !== window.self) {
             bodyRect.setAttribute("height","2000px");
             bodyRect.setAttribute("x","0");
             bodyRect.setAttribute("y","0");
-            bodyRect.setAttribute("fill","rgba(0,0,0,0.6)");
-            bodyRect.setAttribute("mask","url(#osuplaceMask)")
+            bodyRect.setAttribute("fill","rgba(0,0,0,1)");
+            bodyRect.setAttribute("mask","url(#notosuplaceMask)")
             svgBody.appendChild(bodyRect);
 
             return svg
