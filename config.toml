@@ -214,3 +214,10 @@ name = "Chico"
 file = "images/Chico.png"
 startx = 1546
 starty = 1108
+
+[[structure]]
+name = "gura"
+file = "images/Gura.png"
+startx = 228
+starty = 753
+
